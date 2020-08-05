@@ -8,11 +8,10 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -28,8 +27,8 @@ import q.rorbin.verticaltablayout.util.TabFragmentManager;
 import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabView;
 
-import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
 
 /**
  * @author chqiu
@@ -51,7 +50,6 @@ public class VerticalTabLayout extends ScrollView {
     public static int TAB_MODE_FIXED = 10;
     public static int TAB_MODE_SCROLLABLE = 11;
 
-    private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private TabAdapter mTabAdapter;
 
@@ -408,61 +406,6 @@ public class VerticalTabLayout extends ScrollView {
         setupWithFragment(manager, containerResid, fragments);
     }
 
-    public void setupWithViewPager(@Nullable ViewPager viewPager) {
-        if (mViewPager != null && mTabPageChangeListener != null) {
-            mViewPager.removeOnPageChangeListener(mTabPageChangeListener);
-        }
-
-        if (viewPager != null) {
-            final PagerAdapter adapter = viewPager.getAdapter();
-            if (adapter == null) {
-                throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
-            }
-
-            mViewPager = viewPager;
-
-            if (mTabPageChangeListener == null) {
-                mTabPageChangeListener = new OnTabPageChangeListener();
-            }
-            viewPager.addOnPageChangeListener(mTabPageChangeListener);
-
-            addOnTabSelectedListener(new OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabView tab, int position) {
-                    if (mViewPager != null && mViewPager.getAdapter().getCount() >= position) {
-                        mViewPager.setCurrentItem(position);
-                    }
-                }
-
-                @Override
-                public void onTabReselected(TabView tab, int position) {
-                }
-            });
-
-            setPagerAdapter(adapter, true);
-        } else {
-            mViewPager = null;
-            setPagerAdapter(null, true);
-        }
-    }
-
-    private void setPagerAdapter(@Nullable final PagerAdapter adapter, final boolean addObserver) {
-        if (mPagerAdapter != null && mPagerAdapterObserver != null) {
-            mPagerAdapter.unregisterDataSetObserver(mPagerAdapterObserver);
-        }
-
-        mPagerAdapter = adapter;
-
-        if (addObserver && adapter != null) {
-            if (mPagerAdapterObserver == null) {
-                mPagerAdapterObserver = new PagerAdapterObserver();
-            }
-            adapter.registerDataSetObserver(mPagerAdapterObserver);
-        }
-
-        populateFromPagerAdapter();
-    }
-
     private void populateFromPagerAdapter() {
         removeAllTabs();
         if (mPagerAdapter != null) {
@@ -478,12 +421,6 @@ public class VerticalTabLayout extends ScrollView {
             }
 
             // Make sure we reflect the currently set ViewPager item
-            if (mViewPager != null && adapterCount > 0) {
-                final int curItem = mViewPager.getCurrentItem();
-                if (curItem != getSelectedTabPosition() && curItem < getTabCount()) {
-                    setTabSelected(curItem);
-                }
-            }
         } else {
             removeAllTabs();
         }
