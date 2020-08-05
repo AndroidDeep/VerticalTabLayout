@@ -8,6 +8,7 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.PagerAdapter;
@@ -46,6 +47,9 @@ public class VerticalTabLayout extends ScrollView {
     private float mIndicatorCorners;
     private int mTabMode;
     private int mTabHeight;
+    private int mTabSelectedColor;
+
+    private int transparentColor;
 
     public static int TAB_MODE_FIXED = 10;
     public static int TAB_MODE_SCROLLABLE = 11;
@@ -78,6 +82,9 @@ public class VerticalTabLayout extends ScrollView {
         int defaultTabHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
         mTabHeight = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_height, defaultTabHeight);
 
+        mTabSelectedColor = typedArray.getColor(R.styleable.VerticalTabLayout_tab_selected_color,
+                context.getResources().getColor(R.color.transparent));
+
         mColorIndicator = typedArray.getColor(R.styleable.VerticalTabLayout_tab_indicator_color,
                 context.getResources().getColor(R.color.colorAccent));
         mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_width, DisplayUtil.dp2px(context, 3));
@@ -93,6 +100,8 @@ public class VerticalTabLayout extends ScrollView {
         }
 
         typedArray.recycle();
+
+        transparentColor = ContextCompat.getColor(context,R.color.transparent);
     }
 
     @Override
@@ -131,6 +140,7 @@ public class VerticalTabLayout extends ScrollView {
         mTabStrip.addView(tabView, params);
         if (mTabStrip.indexOfChild(tabView) == 0) {
             tabView.setChecked(true);
+            tabView.setBackgroundColor(mTabSelectedColor);
             params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
             params.setMargins(0, 0, 0, 0);
             tabView.setLayoutParams(params);
@@ -221,8 +231,10 @@ public class VerticalTabLayout extends ScrollView {
         if (selected = (view != mSelectedTab)) {
             if (mSelectedTab != null) {
                 mSelectedTab.setChecked(false);
+                mSelectedTab.setBackgroundColor(transparentColor);
             }
             view.setChecked(true);
+            view.setBackgroundColor(mTabSelectedColor);
             if (updataIndicator) {
                 mTabStrip.moveIndicatorWithAnimator(position);
             }

@@ -13,23 +13,19 @@ import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabView;
 
-/**
- * @author MBP
- * @date 2020/8/5
- */
-class TabLayoutMediator2 {
+public class VerticalTabLayoutMediator {
     @NonNull
     private final VerticalTabLayout tabLayout;
     @NonNull
     private final ViewPager2 viewPager;
     private final boolean autoRefresh;
-    private final TabLayoutMediator2.TabConfigurationStrategy tabConfigurationStrategy;
+    private final VerticalTabLayoutMediator.TabConfigurationStrategy tabConfigurationStrategy;
     @Nullable
     private RecyclerView.Adapter<?> adapter;
     private boolean attached;
 
     @Nullable
-    private TabLayoutMediator2.TabLayoutOnPageChangeCallback onPageChangeCallback;
+    private VerticalTabLayoutMediator.TabLayoutOnPageChangeCallback onPageChangeCallback;
     @Nullable
     private VerticalTabLayout.OnTabSelectedListener onTabSelectedListener;
     @Nullable
@@ -51,18 +47,18 @@ class TabLayoutMediator2 {
         void onConfigureTab(@NonNull TabView tab, int position);
     }
 
-    public TabLayoutMediator2(
+    public VerticalTabLayoutMediator(
             @NonNull VerticalTabLayout tabLayout,
             @NonNull ViewPager2 viewPager,
-            @NonNull TabLayoutMediator2.TabConfigurationStrategy tabConfigurationStrategy) {
+            @NonNull VerticalTabLayoutMediator.TabConfigurationStrategy tabConfigurationStrategy) {
         this(tabLayout, viewPager, true, tabConfigurationStrategy);
     }
 
-    TabLayoutMediator2(
+    VerticalTabLayoutMediator(
             @NonNull VerticalTabLayout tabLayout,
             @NonNull ViewPager2 viewPager,
             boolean autoRefresh,
-            @NonNull TabLayoutMediator2.TabConfigurationStrategy tabConfigurationStrategy) {
+            @NonNull VerticalTabLayoutMediator.TabConfigurationStrategy tabConfigurationStrategy) {
         this.tabLayout = tabLayout;
         this.viewPager = viewPager;
         this.autoRefresh = autoRefresh;
@@ -89,18 +85,18 @@ class TabLayoutMediator2 {
         attached = true;
 
         // Add our custom OnPageChangeCallback to the ViewPager
-        onPageChangeCallback = new TabLayoutMediator2.TabLayoutOnPageChangeCallback(tabLayout);
+        onPageChangeCallback = new VerticalTabLayoutMediator.TabLayoutOnPageChangeCallback(tabLayout);
         viewPager.registerOnPageChangeCallback(onPageChangeCallback);
 
         // Now we'll add a tab selected listener to set ViewPager's current item
-        onTabSelectedListener = new TabLayoutMediator2.ViewPagerOnTabSelectedListener(viewPager);
+        onTabSelectedListener = new VerticalTabLayoutMediator.ViewPagerOnTabSelectedListener(viewPager);
         tabLayout.addOnTabSelectedListener(onTabSelectedListener);
 
         // Now we'll populate ourselves from the pager adapter, adding an observer if
         // autoRefresh is enabled
         if (autoRefresh) {
             // Register our observer on the new adapter
-            pagerAdapterObserver = new TabLayoutMediator2.PagerAdapterObserver();
+            pagerAdapterObserver = new VerticalTabLayoutMediator.PagerAdapterObserver();
             adapter.registerAdapterDataObserver(pagerAdapterObserver);
         }
 
