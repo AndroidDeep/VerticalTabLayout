@@ -42,6 +42,7 @@ public class VerticalTabLayout extends ScrollView {
     private TabView mSelectedTab;
     private int mTabMargin;
     private int mIndicatorWidth;
+    private int mIndicatorHeight;
     private int mIndicatorGravity;
     private float mIndicatorCorners;
     private int mTabMode;
@@ -73,11 +74,18 @@ public class VerticalTabLayout extends ScrollView {
         mContext = context;
         mTabSelectedListeners = new ArrayList<>();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerticalTabLayout);
-        mColorIndicator = typedArray.getColor(R.styleable.VerticalTabLayout_indicator_color,
+
+        mTabMargin = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_margin, 0);
+        mTabMode = typedArray.getInteger(R.styleable.VerticalTabLayout_tab_mode, TAB_MODE_FIXED);
+        int defaultTabHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
+        mTabHeight = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_height, defaultTabHeight);
+
+        mColorIndicator = typedArray.getColor(R.styleable.VerticalTabLayout_tab_indicator_color,
                 context.getResources().getColor(R.color.colorAccent));
-        mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_indicator_width, DisplayUtil.dp2px(context, 3));
-        mIndicatorCorners = typedArray.getDimension(R.styleable.VerticalTabLayout_indicator_corners, 0);
-        mIndicatorGravity = typedArray.getInteger(R.styleable.VerticalTabLayout_indicator_gravity, Gravity.LEFT);
+        mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_width, DisplayUtil.dp2px(context, 3));
+        mIndicatorHeight = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_height, 0);
+        mIndicatorCorners = typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_corners, 0);
+        mIndicatorGravity = typedArray.getInteger(R.styleable.VerticalTabLayout_tab_indicator_gravity, Gravity.LEFT);
         if (mIndicatorGravity == 3) {
             mIndicatorGravity = Gravity.LEFT;
         } else if (mIndicatorGravity == 5) {
@@ -85,10 +93,7 @@ public class VerticalTabLayout extends ScrollView {
         } else if (mIndicatorGravity == 119) {
             mIndicatorGravity = Gravity.FILL;
         }
-        mTabMargin = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_margin, 0);
-        mTabMode = typedArray.getInteger(R.styleable.VerticalTabLayout_tab_mode, TAB_MODE_FIXED);
-        int defaultTabHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
-        mTabHeight = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_height, defaultTabHeight);
+
         typedArray.recycle();
     }
 
@@ -622,9 +627,15 @@ public class VerticalTabLayout extends ScrollView {
             super.onDraw(canvas);
             mIndicatorPaint.setColor(mColorIndicator);
             mIndicatorRect.left = mIndicatorX;
-            mIndicatorRect.top = mIndicatorTopY;
+            if(mIndicatorHeight == 0){
+                mIndicatorRect.top = mIndicatorTopY;
+                mIndicatorRect.bottom = mIndicatorBottomY;
+            }else{
+                float margin = (mIndicatorBottomY - mIndicatorTopY - mIndicatorHeight) / 2;
+                mIndicatorRect.top = mIndicatorTopY + margin;
+                mIndicatorRect.bottom = mIndicatorBottomY - margin;
+            }
             mIndicatorRect.right = mIndicatorX + mIndicatorWidth;
-            mIndicatorRect.bottom = mIndicatorBottomY;
             if (mIndicatorCorners != 0) {
                 canvas.drawRoundRect(mIndicatorRect, mIndicatorCorners, mIndicatorCorners, mIndicatorPaint);
             } else {

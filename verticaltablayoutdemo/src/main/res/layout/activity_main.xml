@@ -21,8 +21,8 @@
             android:layout_weight="1"
             android:background="#369DE3"
             android:visibility="visible"
-            app:indicator_color="#FFFFFF"
-            app:indicator_gravity="left"
+            app:tab_indicator_color="#FFFFFF"
+            app:tab_indicator_gravity="left"
             app:tab_mode="fixed" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
@@ -32,9 +32,9 @@
             android:layout_weight="1"
             android:background="#EF7062"
             android:visibility="visible"
-            app:indicator_color="#FFFFFF"
-            app:indicator_corners="5dp"
-            app:indicator_gravity="right"
+            app:tab_indicator_color="#FFFFFF"
+            app:tab_indicator_corners="5dp"
+            app:tab_indicator_gravity="right"
             app:tab_height="50dp"
             app:tab_mode="scrollable" />
 
@@ -46,9 +46,9 @@
             android:background="#009687"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            app:indicator_color="#115E56"
-            app:indicator_corners="20dp"
-            app:indicator_gravity="fill"
+            app:tab_indicator_color="#115E56"
+            app:tab_indicator_corners="20dp"
+            app:tab_indicator_gravity="fill"
             app:tab_margin="10dp"
             android:visibility="visible"
             app:tab_mode="scrollable" />
@@ -60,8 +60,8 @@
             android:layout_weight="1"
             android:background="#EDEDED"
             android:visibility="visible"
-            app:indicator_color="#FFFFFF"
-            app:indicator_gravity="fill"
+            app:tab_indicator_color="#FFFFFF"
+            app:tab_indicator_gravity="fill"
             app:tab_height="50dp"
             app:tab_mode="scrollable" />
     </LinearLayout>

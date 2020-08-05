@@ -39,8 +39,8 @@ VERSION_CODE : [here](https://github.com/qstumn/VerticalTabLayout/releases)
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#EDEDED"
-        app:indicator_color="#FFFFFF"
-        app:indicator_gravity="fill"
+        app:tab_indicator_color="#FFFFFF"
+        app:tab_indicator_gravity="fill"
         app:tab_height="50dp"
         app:tab_mode="scrollable" />
 ```    
@@ -49,10 +49,10 @@ VERSION_CODE : [here](https://github.com/qstumn/VerticalTabLayout/releases)
 
 xml | code | 说明
 ---|---|---
-app:indicator_color | setIndicatorColor | 指示器颜色
+app:tab_indicator_color | setIndicatorColor | 指示器颜色
 app:indicator_width | setIndicatorWidth | 指示器宽度
-app:indicator_gravity | setIndicatorGravity | 指示器位置
-app:indicator_corners | setIndicatorCorners | 指示器圆角
+app:tab_indicator_gravity | setIndicatorGravity | 指示器位置
+app:tab_indicator_corners | setIndicatorCorners | 指示器圆角
 app:tab_mode | setTabMode | Tab高度模式
 app:tab_height | setTabHeight | Tab高度
 app:tab_margin | setTabMargin | Tab间距
