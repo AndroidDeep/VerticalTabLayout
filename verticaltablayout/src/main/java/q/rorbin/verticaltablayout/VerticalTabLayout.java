@@ -8,6 +8,7 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.TypedValue;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -48,6 +49,9 @@ public class VerticalTabLayout extends ScrollView {
     private int mTabMode;
     private int mTabHeight;
     private int mTabSelectedColor;
+    private int mTextUnSelectedColor;
+    private int mTextSelectedColor;
+    private float mTabTextSize;
 
     private int transparentColor;
 
@@ -87,7 +91,7 @@ public class VerticalTabLayout extends ScrollView {
 
         mColorIndicator = typedArray.getColor(R.styleable.VerticalTabLayout_tab_indicator_color,
                 context.getResources().getColor(R.color.colorAccent));
-        mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_width, DisplayUtil.dp2px(context, 3));
+        mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_width, DisplayUtil.dp2px(3));
         mIndicatorHeight = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_height, 0);
         mIndicatorCorners = typedArray.getDimension(R.styleable.VerticalTabLayout_tab_indicator_corners, 0);
         mIndicatorGravity = typedArray.getInteger(R.styleable.VerticalTabLayout_tab_indicator_gravity, Gravity.LEFT);
@@ -98,6 +102,10 @@ public class VerticalTabLayout extends ScrollView {
         } else if (mIndicatorGravity == 119) {
             mIndicatorGravity = Gravity.FILL;
         }
+
+        mTextUnSelectedColor = typedArray.getColor(R.styleable.VerticalTabLayout_tab_text_unselected_color,0);
+        mTextSelectedColor = typedArray.getColor(R.styleable.VerticalTabLayout_tab_text_selected_color,0);
+        mTabTextSize = typedArray.getDimension(R.styleable.VerticalTabLayout_tab_text_size,DisplayUtil.sp2px(14));
 
         typedArray.recycle();
 
@@ -141,6 +149,8 @@ public class VerticalTabLayout extends ScrollView {
         if (mTabStrip.indexOfChild(tabView) == 0) {
             tabView.setChecked(true);
             tabView.setBackgroundColor(mTabSelectedColor);
+            if(mTextSelectedColor != 0)
+                mSelectedTab.getTitleView().setTextColor(mTextSelectedColor);
             params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
             params.setMargins(0, 0, 0, 0);
             tabView.setLayoutParams(params);
@@ -199,6 +209,9 @@ public class VerticalTabLayout extends ScrollView {
 
     public void addTab(TabView tabView) {
         if (tabView != null) {
+            if(mTextUnSelectedColor != 0)
+                tabView.getTitleView().setTextColor(mTextUnSelectedColor);
+            tabView.getTitleView().setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
             addTabWithMode(tabView);
             tabView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -232,9 +245,13 @@ public class VerticalTabLayout extends ScrollView {
             if (mSelectedTab != null) {
                 mSelectedTab.setChecked(false);
                 mSelectedTab.setBackgroundColor(transparentColor);
+                if(mTextUnSelectedColor != 0)
+                    mSelectedTab.getTitleView().setTextColor(mTextUnSelectedColor);
             }
             view.setChecked(true);
             view.setBackgroundColor(mTabSelectedColor);
+            if(mTextSelectedColor != 0)
+                mSelectedTab.getTitleView().setTextColor(mTextSelectedColor);
             if (updataIndicator) {
                 mTabStrip.moveIndicatorWithAnimator(position);
             }

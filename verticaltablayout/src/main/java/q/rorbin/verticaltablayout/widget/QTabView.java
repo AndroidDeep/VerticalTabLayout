@@ -3,6 +3,7 @@ package q.rorbin.verticaltablayout.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.annotation.Px;
@@ -117,6 +118,7 @@ public class QTabView extends TabView {
     }
 
     private void initTitleView() {
+        mTitle.setTypeface(Typeface.create("sans-serif-condensed-medium",Typeface.NORMAL));
         mTitle.setTextColor(isChecked() ? mTabTitle.getColorSelected() : mTabTitle.getColorNormal());
         mTitle.setTextSize(mTabTitle.getTitleTextSize());
         mTitle.setText(mTabTitle.getContent());
