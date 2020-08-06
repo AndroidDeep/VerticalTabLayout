@@ -150,7 +150,7 @@ public class VerticalTabLayout extends ScrollView {
             tabView.setChecked(true);
             tabView.setBackgroundColor(mTabSelectedColor);
             if(mTextSelectedColor != 0)
-                mSelectedTab.getTitleView().setTextColor(mTextSelectedColor);
+                tabView.getTitleView().setTextColor(mTextSelectedColor);
             params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
             params.setMargins(0, 0, 0, 0);
             tabView.setLayoutParams(params);
