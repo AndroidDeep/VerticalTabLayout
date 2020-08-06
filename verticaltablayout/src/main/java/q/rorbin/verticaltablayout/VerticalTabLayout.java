@@ -251,7 +251,7 @@ public class VerticalTabLayout extends ScrollView {
             view.setChecked(true);
             view.setBackgroundColor(mTabSelectedColor);
             if(mTextSelectedColor != 0)
-                mSelectedTab.getTitleView().setTextColor(mTextSelectedColor);
+                view.getTitleView().setTextColor(mTextSelectedColor);
             if (updataIndicator) {
                 mTabStrip.moveIndicatorWithAnimator(position);
             }
